@@ -282,7 +282,9 @@ class RepLKNet(nn.Module):
             return outs
 
     def forward(self, x):
-        x = self.forward_features(x)
+        with torch.no_grad():
+            self.training = False
+            x = self.forward_features(x)
         return x
         # if self.out_indices:
         #     return x
@@ -322,9 +324,12 @@ class RepLKNet(nn.Module):
 
 
 def create_RepLKNet31B(drop_path_rate=0.3, num_classes=1000, use_checkpoint=True, small_kernel_merged=False):
-    return RepLKNet(large_kernel_sizes=[31,29,27,13], layers=[2,2,18,2], channels=[32,64,128,256],
+    model = RepLKNet(large_kernel_sizes=[31,29,27,13], layers=[2,2,18,2], channels=[128,256,512,1024],
                     drop_path_rate=drop_path_rate, small_kernel=5, num_classes=num_classes, use_checkpoint=use_checkpoint,
                     small_kernel_merged=small_kernel_merged)
+    model_save = torch.load(r'/home/data/wangpinzhi/Omni_Transformer/OmniLKNet/models/pretrained_models/RepLKNet-31B_ImageNet-1K_UperNet_Cityscapes.pth')
+    model.load_state_dict(model_save['state_dict'], strict=False)
+    return model
 
 def create_RepLKNet31L(drop_path_rate=0.3, num_classes=1000, use_checkpoint=True, small_kernel_merged=False):
     return RepLKNet(large_kernel_sizes=[31,29,27,13], layers=[2,2,18,2], channels=[192,384,768,1536],

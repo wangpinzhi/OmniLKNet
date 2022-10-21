@@ -149,9 +149,9 @@ def main(args):
 
     # get device
     device = torch.device(args.device)
-    if args.devic =='cuda':
+    if args.device =='cuda':
         torch.backends.cudnn.enabled = True
-        torch.backend.cudnn.benchmark=True
+        torch.backends.cudnn.benchmark=True
 
     # fix the seed for reproducibility
     seed = args.seed

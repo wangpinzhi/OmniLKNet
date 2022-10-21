@@ -16,6 +16,8 @@ class OmniLKNet(nn.Module):
 
     def forward(self, leftImg, rightImg):
 
+        
+
         features_left = self.first_step(leftImg)
         features_right = self.first_step(rightImg)
 

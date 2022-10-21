@@ -16,7 +16,7 @@ class Conv3DNet(nn.Module):
         self.sample_height = origin_img_h # origin image height, so we can recover the resolution
         self.sample_width = origin_img_w
 
-        self.dres0 = nn.Sequential(convbn_3d(512, 32, 3, 1, 1), nn.ReLU(
+        self.dres0 = nn.Sequential(convbn_3d(2048, 32, 3, 1, 1), nn.ReLU(
             inplace=True), convbn_3d(32, 32, 3, 1, 1), nn.ReLU(inplace=True))
 
         self.dres1 = nn.Sequential(convbn_3d(32, 32, 3, 1, 1), nn.ReLU(
@@ -60,9 +60,9 @@ class Conv3DNet(nn.Module):
 
         # matching
         cost = Variable(torch.FloatTensor(refimg_fea.size()[0], refimg_fea.size()[
-                        1] * 2, self.maxdisp // 4, refimg_fea.size()[2], refimg_fea.size()[3]).zero_()).cuda()
+                        1] * 2, self.maxdisp // 32, refimg_fea.size()[2], refimg_fea.size()[3]).zero_()).cuda()
 
-        for i in range(self.maxdisp // 4):
+        for i in range(self.maxdisp // 32):
             if i > 0:
                 cost[:, :refimg_fea.size()[1], i, :, i:] = refimg_fea[:, :, :, i:]
                 cost[:, refimg_fea.size()[1]:, i, :,
