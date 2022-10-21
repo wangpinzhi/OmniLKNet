@@ -206,7 +206,7 @@ class RepLKNet(nn.Module):
                  dw_ratio=1, ffn_ratio=4, in_channels=3, num_classes=1000, out_indices=None,
                  use_checkpoint=False,
                  small_kernel_merged=False,
-                 use_sync_bn=True,
+                 use_sync_bn=False,
                  norm_intermediate_features=False       # for RepLKNet-XL on COCO and ADE20K, use an extra BN to normalize the intermediate feature maps then feed them into the heads
                  ):
         super().__init__()
@@ -322,7 +322,7 @@ class RepLKNet(nn.Module):
 
 
 def create_RepLKNet31B(drop_path_rate=0.3, num_classes=1000, use_checkpoint=True, small_kernel_merged=False):
-    return RepLKNet(large_kernel_sizes=[31,29,27,13], layers=[2,2,18,2], channels=[128,256,512,1024],
+    return RepLKNet(large_kernel_sizes=[31,29,27,13], layers=[2,2,18,2], channels=[32,64,128,256],
                     drop_path_rate=drop_path_rate, small_kernel=5, num_classes=num_classes, use_checkpoint=use_checkpoint,
                     small_kernel_merged=small_kernel_merged)
 

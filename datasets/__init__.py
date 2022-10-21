@@ -21,7 +21,7 @@ def build_data_loader(args):
 
     if args.dataset == 'deep360':
         dataset_train = Deep360Dataset(dataset_dir, 'train')
-        dataset_validation = Deep360Dataset(dataset_dir, args.validation)
+        dataset_validation = Deep360Dataset(dataset_dir, 'validation')
         dataset_test = Deep360Dataset(dataset_dir, 'test')
 
     else:

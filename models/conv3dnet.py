@@ -16,7 +16,7 @@ class Conv3DNet(nn.Module):
         self.sample_height = origin_img_h # origin image height, so we can recover the resolution
         self.sample_width = origin_img_w
 
-        self.dres0 = nn.Sequential(convbn_3d(64, 32, 3, 1, 1), nn.ReLU(
+        self.dres0 = nn.Sequential(convbn_3d(512, 32, 3, 1, 1), nn.ReLU(
             inplace=True), convbn_3d(32, 32, 3, 1, 1), nn.ReLU(inplace=True))
 
         self.dres1 = nn.Sequential(convbn_3d(32, 32, 3, 1, 1), nn.ReLU(
@@ -55,7 +55,6 @@ class Conv3DNet(nn.Module):
                 m.bias.data.zero_()
 
     def forward(self, left_features, right_features):
-
         refimg_fea = left_features
         targetimg_fea = right_features
 
@@ -90,8 +89,8 @@ class Conv3DNet(nn.Module):
         cost3 = self.classif3(out3) + cost2
 
         if self.training:
-            cost1 = F.upsample(cost1, [self.maxdisp, self.sample_height, self.sample_width], mode='trilinear', align_corners=True)
-            cost2 = F.upsample(cost2, [self.maxdisp, self.sample_height, self.sample_width], mode='trilinear', align_corners=True)
+            cost1 = F.interpolate(cost1, [self.maxdisp, self.sample_height, self.sample_width], mode='trilinear', align_corners=True)
+            cost2 = F.interpolate(cost2, [self.maxdisp, self.sample_height, self.sample_width], mode='trilinear', align_corners=True)
 
             cost1 = torch.squeeze(cost1, 1)
             pred1 = F.softmax(cost1, dim=1)
@@ -99,7 +98,7 @@ class Conv3DNet(nn.Module):
             cost2 = torch.squeeze(cost2, 1)
             pred2 = F.softmax(cost2, dim=1)
 
-        cost3 = F.upsample(cost3, [self.maxdisp, self.sample_height, self.sample_width], mode='trilinear', align_corners=True)
+        cost3 = F.interpolate(cost3, [self.maxdisp, self.sample_height, self.sample_width], mode='trilinear', align_corners=True)
         cost3 = torch.squeeze(cost3, 1)
         pred3 = F.softmax(cost3, dim=1)
 

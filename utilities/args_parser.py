@@ -22,7 +22,7 @@ def get_args_parser():
 
     # data settings
     parser.add_argument('--input_size', default=(3,1024,512), help='input data size: CxHxW')
-    parser.add_argument('--maxdisp', default=511)
+    parser.add_argument('--maxdisp', default=512, type=int )
 
     parser.add_argument('--start_epoch', default=1, type=int)
     

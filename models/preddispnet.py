@@ -12,18 +12,19 @@ class disparityregression(nn.Module):
     return out
 
 class PredDispNet(nn.Module):
-    def __init__(self, strategy='softmax'):
+    def __init__(self, maxdisp, strategy='softmax'):
         super(PredDispNet, self).__init__()
         self.strategy = strategy
+        self.maxdisp = maxdisp
 
     def forward(self, cost_volume1, cost_volume2=None, cost_volume3=None): # Cost Volume Size: BxDxHxW
-      pred1 = disparityregression(cost_volume1)
+      pred1 = disparityregression(self.maxdisp)(cost_volume1)
       pred2 = None
       pred3 = None
-      if cost_volume2:
-        pred2 = disparityregression(cost_volume2)
-      if cost_volume3:
-        pred3 = disparityregression(cost_volume3)
+      if cost_volume2 is not None:
+        pred2 = disparityregression(self.maxdisp)(cost_volume2)
+      if cost_volume3 is not None:
+        pred3 = disparityregression(self.maxdisp)(cost_volume3)
       return pred1, pred2, pred3
 
 def create_PredDispNet(maxdisp):

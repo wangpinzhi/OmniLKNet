@@ -59,10 +59,12 @@ def train(model, optimizer, lr_scheduler, prev_best, checkpoint_saver, device,  
         with tqdm(total=len(data_loader_train)) as t:
             for batch_idx, batchData in enumerate(data_loader_train):
                 
+                # Size: B C H W
                 leftImg = batchData['left'].to(device)
                 rightImg = batchData['right'].to(device)
                 disp_gt = batchData['disp'].to(device)
                 disp_mask = batchData['occ_mask'].to(device)
+                disp_mask = ~disp_mask
 
                 # model inference
                 model.train()
@@ -114,6 +116,8 @@ def train(model, optimizer, lr_scheduler, prev_best, checkpoint_saver, device,  
                     disp_gt = batchData['disp'].to(device)
                     disp_mask = batchData['occ_mask'].to(device)
 
+                    
+
                     # model inference
                     model.eval()
 
@@ -145,6 +149,8 @@ def main(args):
 
     # get device
     device = torch.device(args.device)
+    if args.devic =='cuda':
+        pass
 
     # fix the seed for reproducibility
     seed = args.seed

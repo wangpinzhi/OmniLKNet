@@ -76,6 +76,7 @@ class Deep360Dataset(data.Dataset):
         # disp
         disp_fname = data_dict['disp_path']
         disp = np.load(disp_fname)['arr_0']
+        disp = np.expand_dims(disp,axis=0)
 
         input_data['disp'] = disp
         input_data['occ_mask'] = np.zeros_like(disp).astype(np.bool)

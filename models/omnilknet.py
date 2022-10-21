@@ -19,7 +19,10 @@ class OmniLKNet(nn.Module):
         features_left = self.first_step(leftImg)
         features_right = self.first_step(rightImg)
 
-        fixed_cost_volume1, fixed_cost_volume2, fixed_cost_volume3 = self.second_step(features_left,features_right)
+        if self.training:
+            fixed_cost_volume1, fixed_cost_volume2, fixed_cost_volume3 = self.second_step(features_left,features_right)
+        else:
+            fixed_cost_volume1 = self.second_step(features_left,features_right)
 
         pred1, pred2, pred3 = self.final_step(fixed_cost_volume1,fixed_cost_volume2,fixed_cost_volume3)
 

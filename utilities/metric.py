@@ -17,14 +17,14 @@ class Metric:
         self.avg_E5px = 0.
         self.avg_Epe = 0.
 
-    def _pixel_error_pct(th_pixel, pred, gt):
+    def _pixel_error_pct(self, th_pixel, pred, gt):
         error = torch.abs(pred - gt)
-        return 100 * torch.numel(error[error >= th_pixel]) / torch.numel(error)
+        return 100 * error[error >= th_pixel].numel() / error.numel()
     
     def add(self, pred, gt):
-        self.cur_Epe = torch.mean(torch.abs(pred - gt)).cpu().numpy()
-        self.cur_E3px = pixel_error_pct(3,pred, gt)
-        self.cur_E5px = pixel_error_pct(5,pred, gt)
+        self.cur_Epe = torch.mean(torch.abs(pred - gt)).data.item()
+        self.cur_E3px = self._pixel_error_pct(3,pred, gt)
+        self.cur_E5px = self._pixel_error_pct(5,pred, gt)
         self.counter += 1
 
     def update(self):
