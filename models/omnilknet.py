@@ -23,10 +23,12 @@ class OmniLKNet(nn.Module):
 
         if self.training:
             fixed_cost_volume1, fixed_cost_volume2, fixed_cost_volume3 = self.second_step(features_left,features_right)
+            pred1, pred2, pred3 = self.final_step(fixed_cost_volume1,fixed_cost_volume2,fixed_cost_volume3)
         else:
             fixed_cost_volume1 = self.second_step(features_left,features_right)
+            pred1, pred2, pred3 = self.final_step(fixed_cost_volume1)
 
-        pred1, pred2, pred3 = self.final_step(fixed_cost_volume1,fixed_cost_volume2,fixed_cost_volume3)
+        
 
         return pred1, pred2, pred3
 

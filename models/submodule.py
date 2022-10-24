@@ -1,5 +1,40 @@
 import torch.nn as nn
 import torch.nn.functional as F
+from models.basic.spherical_conv import SphereConv
+
+# NOTE: build feature extraction with sphere conv
+def sphereConvbn(in_height, in_width, sphereType, in_planes, out_planes, kernel_size, stride, pad, dilation):
+
+  return nn.Sequential(
+      SphereConv(in_height,
+                 in_width,
+                 sphereType,
+                 in_planes,
+                 out_planes,
+                 kernel_size=kernel_size,
+                 stride=stride,
+                 padding=dilation if dilation > 1 else pad,
+                 dilation=dilation,
+                 bias=False),
+      nn.BatchNorm2d(out_planes))
+
+
+def sphereConvbnrelu(in_height, in_width, sphereType, in_planes, out_planes, kernel_size, stride, pad, dilation):
+
+  return nn.Sequential(
+      SphereConv(in_height,
+                 in_width,
+                 sphereType,
+                 in_planes,
+                 out_planes,
+                 kernel_size=kernel_size,
+                 stride=stride,
+                 padding=dilation if dilation > 1 else pad,
+                 dilation=dilation,
+                 bias=False),
+      nn.BatchNorm2d(out_planes),
+      nn.ReLU(inplace=True))
+
 
 def convbn(in_planes, out_planes, kernel_size, stride, pad, dilation):
 

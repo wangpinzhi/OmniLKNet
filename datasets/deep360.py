@@ -4,9 +4,8 @@ import numpy as np
 import torch.utils.data as data
 from PIL import Image
 from albumentations import Compose
-from natsort import natsorted
 from datasets.preprocess import augment, normalization
-from datasets.stereo_albumentation import RGBShiftStereo, RandomBrightnessContrastStereo, random_crop, random_crop_fixed
+from datasets.stereo_albumentation import RGBShiftStereo, RandomBrightnessContrastStereo
 
 
 class Deep360Dataset(data.Dataset):

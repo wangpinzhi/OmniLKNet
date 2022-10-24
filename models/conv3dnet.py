@@ -1,4 +1,3 @@
-from random import triangular
 import torch.nn as nn
 import math
 from models.submodule import hourglass, convbn_3d
